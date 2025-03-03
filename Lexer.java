@@ -1,57 +1,46 @@
-
-/*
- * A Lexer to Tokenize the given algorithm.
- */
-import java.util.ArrayList;
-import util.Token;
-
-public class Lexer {
+import java.util.*;
+import util.*;
+class Lexer {
     private String text;
     private int index, length;
-
-    private String getWord() {
-        String word = "";
-        for (char c; index < length && Character.isLetter(c = text.charAt(index)); index++) {
-            word += c;
-        }
-        index--;
-        return word;
-    }
-
-    private String getNum() {
-        String num = "";
-        for (char c; index < length && Character.isDigit(c = text.charAt(index)); index++) {
-            num += c;
-        }
-        index--;
-        return num;
-    }
-
-    public ArrayList<Token> tokenize(String t) throws Exception {
-        text = t;
-        length = text.length();
-        ArrayList<Token> tokens = new ArrayList<Token>();
-        Token token;
-        char c;
+    
+    public List<Token> tokenize(String text) throws Exception {
+        this.text = text;
+        this.length = text.length();
+        List<Token> tokens = new ArrayList<>();
+        
         for (index = 0; index < length; index++) {
-            c = text.charAt(index);
-            if (c == '#') {
-                token = new Token("Comment");
-                break;
-            } else if (c == ' ')
-                continue;
-            else if (Character.isDigit(c)) {
-                token = new Token("NUMBER", getNum());
-            } else if (Token.map.containsKey(c)) {
-                token = new Token(Token.map.get(c));
+            char c = text.charAt(index);
+            if (Character.isWhitespace(c)) continue;
+            if (Character.isDigit(c)) {
+                tokens.add(new Token("NUMBER", getNumber()));
+            } else if (Token.symbols.containsKey(c)) {
+                tokens.add(new Token(Token.symbols.get(c)));
             } else if (Character.isLetter(c)) {
-                token = new Token("WORD", getWord());
+                String word = getWord();
+                tokens.add(new Token(Token.keywords.getOrDefault(word, "IDENTIFIER"), word));
             } else {
-                token = new Token(null);
                 throw new Exception("LEXER: Invalid Character " + c + " at pos " + index);
             }
-            tokens.add(token);
         }
         return tokens;
+    }
+    
+    private String getWord() {
+        StringBuilder word = new StringBuilder();
+        while (index < length && Character.isLetter(text.charAt(index))) {
+            word.append(text.charAt(index++));
+        }
+        index--;
+        return word.toString();
+    }
+    
+    private String getNumber() {
+        StringBuilder number = new StringBuilder();
+        while (index < length && Character.isDigit(text.charAt(index))) {
+            number.append(text.charAt(index++));
+        }
+        index--;
+        return number.toString();
     }
 }
