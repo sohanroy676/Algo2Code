@@ -4,7 +4,8 @@ import java.util.*;
 
 public class Token {
     public String type, value;
-    public static Map<Character, String> map = new HashMap<Character, String>();
+    public static Map<Character, String> symbols = new HashMap<>();
+    public static Map<String, String> keywords = new HashMap<>();
 
     public Token(String t, String v) {
         type = t;
@@ -21,15 +22,19 @@ public class Token {
     }
 
     public static void init() {
-        Token.map.put(',', "COMMA");
-        Token.map.put('+', "PLUS");
-        Token.map.put('=', "EQUALS");
-        Token.map.put(';', "SEMICOLON");
-        Token.map.put('[', "BRACKET_OPEN");
-        Token.map.put(']', "BRACKET_CLOSE");
-        Token.map.put('(', "PARANTHESES_OPEN");
-        Token.map.put(')', "PARANTHESES_CLOSE");
-        Token.map.put('{', "BRACE_OPEN");
-        Token.map.put('}', "BRACE_CLOSE");
+        Token.symbols.put(',', "COMMA");
+        Token.symbols.put('+', "PLUS");
+        Token.symbols.put('=', "EQUALS");
+        Token.symbols.put(';', "SEMICOLON");
+        Token.symbols.put('[', "BRACKET_OPEN");
+        Token.symbols.put(']', "BRACKET_CLOSE");
+        Token.symbols.put('(', "PARANTHESES_OPEN");
+        Token.symbols.put(')', "PARANTHESES_CLOSE");
+        Token.symbols.put('{', "BRACE_OPEN");
+        Token.symbols.put('}', "BRACE_CLOSE");
+
+        // Token.keywords.put("if", "");
+        // Token.keywords.put();
+        // Token.keywords.put();
     }
 }
